@@ -1,0 +1,22 @@
+name: development
+channels:
+  - conda-forge
+dependencies:
+  # --- Runtime ---
+  - python=3.12
+  - nodejs=22              # frontend (React + Vite) w tym samym środowisku
+
+  # --- Backend / API ---
+  - fastapi>=0.115
+  - fastapi-cli            # komenda `fastapi dev` (auto-reload)
+  - uvicorn-standard       # serwer, który uruchamia FastAPI
+  - sqlmodel               # ORM: modele Pydantic + tabele SQLite
+  - pydantic-settings      # konfiguracja i klucze z pliku .env
+  - httpx                  # zapytania HTTP do Transitous
+
+  # --- AI ---
+  - openai                 # klient zgodny z Groq
+
+  # --- Testy i jakość kodu ---
+  - pytest
+  - ruff
