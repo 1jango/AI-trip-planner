@@ -10,7 +10,7 @@ Układ "Base → Table / Create / Read / Update" to wzorzec z dokumentacji SQLMo
 
 from datetime import UTC, date, datetime
 from enum import StrEnum
-from typing import Self
+from typing import Literal, Self
 
 from pydantic import AwareDatetime, computed_field, model_validator
 from sqlmodel import Field, Relationship, SQLModel
@@ -159,3 +159,58 @@ class TripUpdate(SQLModel):
     def check_no_explicit_nulls(self) -> Self:
         reject_explicit_nulls(self)
         return self
+
+
+# ---------- Plan (POST /api/plan) — tylko schematy API, bez tabel ----------
+
+
+class PlanRequest(SQLModel):
+    """Albo zdanie dla AI (`query`), albo pola formularza — nigdy oba naraz."""
+
+    # Luźny limit chroni przed ogromnym body; dokładny (300 znaków po oczyszczeniu
+    # spacji) sprawdza parser intencji.
+    query: str | None = Field(default=None, max_length=1000)
+    origin: str | None = Field(default=None, max_length=200)
+    destination: str | None = Field(default=None, max_length=200)
+    travel_date: date | None = None
+    priority: Priority | None = None
+
+    @model_validator(mode="after")
+    def check_query_or_form(self) -> Self:
+        form_values = (self.origin, self.destination, self.travel_date, self.priority)
+        if self.query is not None:
+            if any(value is not None for value in form_values):
+                raise ValueError("Podaj zapytanie (query) albo pola formularza — nie oba naraz")
+        elif self.origin is None or self.destination is None or self.travel_date is None:
+            raise ValueError("Formularz wymaga pól origin, destination i travel_date")
+        return self
+
+
+class PlanOption(SQLModel):
+    """Jedna propozycja trasy. `legs` mają format LegCreate — frontend może je od razu
+    wysłać do POST /api/trips, żeby zapisać plan."""
+
+    legs: list[LegCreate]
+    transfers: int = Field(ge=0)
+    departure: AwareDatetime
+    arrival: AwareDatetime
+    duration_minutes: int = Field(ge=0)
+    total_distance_km: float = Field(ge=0)
+    total_co2_kg: float = Field(ge=0)
+    estimated_cost_eur: float = Field(ge=0)  # zawsze szacunek — Transitous nie zna cen
+    is_estimate: bool  # True, gdy któryś etap to nasz szacunek (lot)
+    recommended: bool = False
+
+
+class PlanResponse(SQLModel):
+    origin: str
+    destination: str
+    origin_name: str  # nazwa znaleziona przez geokodowanie, np. "Gdańsk Główny"
+    destination_name: str
+    travel_date: date
+    priority: Priority
+    parsed_by: Literal["ai", "form"]
+    options: list[PlanOption]  # posortowane według priorytetu; pierwsza = rekomendacja
+    recommendation: str | None
+    warnings: list[str]
+    data_sources_url: str
