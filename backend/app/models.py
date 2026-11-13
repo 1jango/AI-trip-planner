@@ -26,6 +26,9 @@ class TransportMode(StrEnum):
     TRAIN = "train"
     BUS = "bus"
     FLIGHT = "flight"
+    TRAM = "tram"  # tramwaj, metro, kolejka linowa — transport miejski na szynach/linach
+    FERRY = "ferry"
+    WALK = "walk"  # dojścia i przesiadki piesze z Transitous
 
 
 class LegSource(StrEnum):

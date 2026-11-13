@@ -90,6 +90,9 @@ def test_every_transport_mode_has_emission_factor() -> None:
         (TransportMode.TRAIN, 100, 3.546),
         (TransportMode.BUS, 100, 2.776),
         (TransportMode.FLIGHT, 1000, 142.53),
+        (TransportMode.TRAM, 10, 0.286),
+        (TransportMode.FERRY, 100, 1.871),
+        (TransportMode.WALK, 2, 0.0),
     ],
 )
 def test_co2_is_distance_times_factor(

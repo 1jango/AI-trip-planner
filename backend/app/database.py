@@ -36,6 +36,7 @@ def create_db_engine(database_url: str) -> Engine:
 def create_db_and_tables(engine: Engine) -> None:
     # Import rejestruje modele w SQLModel.metadata — bez niego create_all nie zna tabel.
     from app import models  # noqa: F401
+    from app.services import cache  # noqa: F401
 
     SQLModel.metadata.create_all(engine)
 
