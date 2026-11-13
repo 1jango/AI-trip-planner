@@ -1,0 +1,27 @@
+[project]
+name = "ai-trip-planner-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+# Zależności instalujemy przez conda (environment.yml), nie przez pip.
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle: błędy stylu
+    "W",  # pycodestyle: ostrzeżenia
+    "F",  # pyflakes: nieużywane importy, niezdefiniowane nazwy
+    "I",  # isort: kolejność importów
+    "UP", # pyupgrade: nowoczesna składnia Pythona
+    "B",  # flake8-bugbear: typowe pułapki (np. mutowalne argumenty domyślne)
+]
+
+[tool.ruff.lint.flake8-bugbear]
+# Depends(...) w argumentach domyślnych to idiom FastAPI, nie błąd.
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."] # dzięki temu `import app` działa w testach bez instalacji pakietu
