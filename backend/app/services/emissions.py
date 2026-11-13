@@ -33,6 +33,12 @@ EMISSION_FACTORS_KG_PER_PASSENGER_KM: dict[TransportMode, float] = {
     # Współczynnik ZAWIERA już 8% dopłaty do dystansu (okrężne trasy, krążenie przed
     # lądowaniem), więc mnożymy go przez czysty dystans haversine — bez własnych dopłat.
     TransportMode.FLIGHT: 0.14253,
+    # "Rail > Light rail and tram" (ID 25_315_3149_11_1). Używamy też dla metra.
+    TransportMode.TRAM: 0.0286,
+    # "Ferry > Foot passenger" (ID 23_318_3188_11_1) — pasażer bez samochodu.
+    TransportMode.FERRY: 0.01871,
+    # Chodzenie nie spala paliwa, więc 0.
+    TransportMode.WALK: 0.0,
 }
 
 # Szacunek czasu lotu — NASZE ZAŁOŻENIA (nie z DESNZ), dlatego wynik ma source="estimate".
