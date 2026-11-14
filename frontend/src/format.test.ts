@@ -4,6 +4,8 @@ import {
   formatDuration,
   formatTime,
   formatTransfers,
+  fromDateTimeLocalValue,
+  toDateTimeLocalValue,
   toLocalDateInputValue,
 } from './format'
 
@@ -52,5 +54,23 @@ describe('toLocalDateInputValue', () => {
   it('uses local date parts with zero padding', () => {
     // Konstruktor z liczbami tworzy datę w LOKALNEJ strefie — test działa wszędzie.
     expect(toLocalDateInputValue(new Date(2026, 0, 5, 0, 30))).toBe('2026-01-05')
+  })
+})
+
+describe('datetime-local conversion', () => {
+  it('round-trips through the local input value', () => {
+    // Wynik pośredni zależy od strefy komputera, ale powrót musi dać ten sam moment.
+    const iso = '2026-11-19T06:30:00.000Z'
+
+    const localValue = toDateTimeLocalValue(iso)
+
+    expect(localValue).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)
+    expect(fromDateTimeLocalValue(localValue)).toBe(iso)
+  })
+
+  it('builds the input value from local date parts', () => {
+    const localMoment = new Date(2026, 10, 19, 7, 5) // 19.11.2026 07:05 czasu lokalnego
+
+    expect(toDateTimeLocalValue(localMoment.toISOString())).toBe('2026-11-19T07:05')
   })
 })
