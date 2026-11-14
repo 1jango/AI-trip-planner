@@ -91,3 +91,159 @@ h1 {
   background: var(--error-bg);
   color: var(--error-text);
 }
+
+/* ---------- Wyszukiwanie i wyniki ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.search {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+button {
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+button.primary {
+  align-self: flex-start;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.tab.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.results h2 {
+  margin: 32px 0 0;
+  font-size: 1.3rem;
+}
+
+.notice {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 12px 0 0;
+}
+
+.notice-ok {
+  background: var(--ok-bg);
+  color: var(--ok-text);
+}
+
+.notice-warn {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+
+.notice-error {
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+.option.recommended {
+  border: 2px solid var(--accent);
+}
+
+.option-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.option-header .badge {
+  margin-left: 8px;
+}
+
+.option-times {
+  font-size: 1.2rem;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+
+.legs {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.92rem;
+}
+
+.legs li {
+  margin: 4px 0;
+}
+
+.leg-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.small {
+  font-size: 0.85rem;
+  margin-top: 16px;
+}
+
+a {
+  color: var(--accent);
+}
