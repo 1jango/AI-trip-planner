@@ -7,9 +7,6 @@ można zapisywać, przeglądać, edytować i usuwać.
 
 Projekt powstał jako zadanie rekrutacyjne na staż w Xelerit (Gdańsk).
 
-![Demo](docs/demo.gif)
-<!-- Nagraj krótkie demo (np. Kap lub QuickTime → GIF) i zapisz jako docs/demo.gif -->
-
 ## Najważniejsza zasada: AI nie wymyśla danych
 
 ```
