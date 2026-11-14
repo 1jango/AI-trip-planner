@@ -4,12 +4,12 @@ import type { Priority, TransportMode } from './api/types'
 // Record<TransportMode, ...> wymusza wpis dla KAŻDEGO trybu: gdy backend dostanie nowy
 // tryb i dopiszemy go do types.ts, kompilator wskaże to miejsce jako błąd.
 export const MODE_LABELS: Record<TransportMode, string> = {
-  train: '🚆 Pociąg',
-  bus: '🚌 Autobus',
-  flight: '✈️ Samolot',
-  tram: '🚋 Tramwaj / metro',
-  ferry: '⛴️ Prom',
-  walk: '🚶 Pieszo',
+  train: 'Pociąg',
+  bus: 'Autobus',
+  flight: 'Samolot',
+  tram: 'Tramwaj / metro',
+  ferry: 'Prom',
+  walk: 'Pieszo',
 }
 
 export const PRIORITY_LABELS: Record<Priority, string> = {
