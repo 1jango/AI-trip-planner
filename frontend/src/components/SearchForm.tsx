@@ -14,6 +14,12 @@ interface SearchFormProps {
 
 const PRIORITIES: Priority[] = ['fast', 'cheap', 'green']
 
+const EXAMPLE_QUERIES = [
+  "Gdańsk → 's-Hertogenbosch w przyszły czwartek, najtaniej",
+  'z Gdyni do Berlina jutro, ekologicznie',
+  'Warszawa – Kraków w sobotę, jak najszybciej',
+]
+
 export function SearchForm({ aiAvailable, isLoading, onSearch, forceForm }: SearchFormProps) {
   const [preferredMode, setPreferredMode] = useState<Mode>('ai')
   const [query, setQuery] = useState('')
@@ -65,16 +71,32 @@ export function SearchForm({ aiAvailable, isLoading, onSearch, forceForm }: Sear
       )}
 
       {mode === 'ai' ? (
-        <label className="field">
-          <span>Dokąd jedziesz?</span>
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Gdańsk → 's-Hertogenbosch w przyszły czwartek, najtaniej"
-            maxLength={300}
-            required
-          />
-        </label>
+        <>
+          <label className="field">
+            <span>Dokąd jedziesz?</span>
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Gdańsk → 's-Hertogenbosch w przyszły czwartek, najtaniej"
+              maxLength={300}
+              required
+            />
+          </label>
+          <div className="examples">
+            <span className="muted small">Wypróbuj:</span>
+            {EXAMPLE_QUERIES.map((example) => (
+              // Klik wpisuje przykład do pola — użytkownik widzi zdanie, zanim wyśle.
+              <button
+                key={example}
+                type="button"
+                className="chip"
+                onClick={() => setQuery(example)}
+              >
+                {example}
+              </button>
+            ))}
+          </div>
+        </>
       ) : (
         <div className="form-grid">
           <label className="field">

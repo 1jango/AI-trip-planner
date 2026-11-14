@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api, ApiError } from './api/client'
 import type { HealthResponse, PlanRequest, PlanResponse } from './api/types'
+import { Footer } from './components/Footer'
 import { PlanResults } from './components/PlanResults'
 import { SavedTrips } from './components/SavedTrips'
 import { SearchForm } from './components/SearchForm'
@@ -92,6 +93,8 @@ function App() {
       )}
 
       <SavedTrips refreshKey={tripsRefreshKey} />
+
+      <Footer />
     </main>
   )
 }

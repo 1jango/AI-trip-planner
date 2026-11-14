@@ -80,7 +80,7 @@ export function PlanResults({ plan, onSaved }: PlanResultsProps) {
         <a href={plan.data_sources_url} target="_blank" rel="noreferrer">
           Transitous i jego źródła danych
         </a>
-        . Koszt to orientacyjny szacunek — Transitous nie podaje cen biletów.
+        .
       </p>
     </section>
   )
