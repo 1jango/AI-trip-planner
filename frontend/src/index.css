@@ -293,3 +293,46 @@ button.link {
 button.link.danger {
   color: var(--error-text);
 }
+
+/* ---------- Przykłady i stopka ---------- */
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.chip:hover,
+button:not(:disabled):hover {
+  border-color: var(--accent);
+}
+
+.footer {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.footer ul {
+  padding-left: 20px;
+  margin: 8px 0 0;
+}
+
+.footer li {
+  margin: 6px 0;
+}
+
+.small-heading {
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--text);
+}
