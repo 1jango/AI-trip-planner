@@ -4,6 +4,8 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
+from app.services.emissions import EMISSION_FACTORS_KG_PER_PASSENGER_KM
+
 
 def make_leg_payload(**overrides: Any) -> dict[str, Any]:
     leg = {
@@ -227,6 +229,49 @@ def test_patch_leg_changes_only_sent_fields(
     assert body["mode"] == "bus"
     assert body["co2_kg"] == 9.0
     assert body["from_place"] == leg["from_place"]
+
+
+def test_patch_leg_mode_recomputes_co2_and_marks_estimate(
+    client: TestClient, created_trip: dict[str, Any]
+) -> None:
+    leg = created_trip["legs"][0]  # pociąg, 520 km, 15.6 kg (wartość z payloadu testowego)
+
+    response = client.patch(
+        f"/api/trips/{created_trip['id']}/legs/{leg['id']}", json={"mode": "bus"}
+    )
+
+    body = response.json()
+    assert body["co2_kg"] == pytest.approx(
+        520.0 * EMISSION_FACTORS_KG_PER_PASSENGER_KM["bus"], abs=0.001
+    )
+    assert body["source"] == "estimate"
+
+
+def test_patch_leg_distance_recomputes_co2_but_keeps_source(
+    client: TestClient, created_trip: dict[str, Any]
+) -> None:
+    leg = created_trip["legs"][0]
+
+    response = client.patch(
+        f"/api/trips/{created_trip['id']}/legs/{leg['id']}", json={"distance_km": 100.0}
+    )
+
+    body = response.json()
+    assert body["co2_kg"] == pytest.approx(
+        100.0 * EMISSION_FACTORS_KG_PER_PASSENGER_KM["train"], abs=0.001
+    )
+    assert body["source"] == "transitous"
+
+
+def test_patch_leg_times_only_keeps_co2(client: TestClient, created_trip: dict[str, Any]) -> None:
+    leg = created_trip["legs"][0]
+
+    response = client.patch(
+        f"/api/trips/{created_trip['id']}/legs/{leg['id']}",
+        json={"arrival": "2026-11-19T12:45:00+01:00"},
+    )
+
+    assert response.json()["co2_kg"] == leg["co2_kg"]
 
 
 def test_patch_leg_updates_trip_total(client: TestClient, created_trip: dict[str, Any]) -> None:
