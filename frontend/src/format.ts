@@ -73,3 +73,32 @@ export function toLocalDateInputValue(date: Date): string {
   const day = String(date.getDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 }
+
+/**
+ * ISO z API ("2026-11-19T06:30:00Z") → wartość dla <input type="datetime-local">
+ * ("2026-11-19T07:30" w Polsce). To pole NIE zna stref czasowych — pokazuje czas lokalny.
+ */
+export function toDateTimeLocalValue(isoDateTime: string): string {
+  const date = new Date(isoDateTime)
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  return `${toLocalDateInputValue(date)}T${hours}:${minutes}`
+}
+
+/**
+ * Wartość z <input type="datetime-local"> → ISO w UTC dla API.
+ * new Date("2026-11-19T07:30") (bez strefy) JS traktuje jako czas LOKALNY — i o to chodzi.
+ * Backend wymaga strefy czasowej, a toISOString() zawsze dodaje "Z" (UTC).
+ */
+export function fromDateTimeLocalValue(value: string): string {
+  return new Date(value).toISOString()
+}
+
+export function formatDateTime(isoDateTime: string): string {
+  return new Intl.DateTimeFormat('pl-PL', {
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(isoDateTime))
+}

@@ -247,3 +247,49 @@ button.primary {
 a {
   color: var(--accent);
 }
+
+/* ---------- Zapisane plany ---------- */
+
+.saved h2 {
+  margin: 40px 0 0;
+  font-size: 1.3rem;
+}
+
+.trip summary {
+  cursor: pointer;
+}
+
+.actions,
+.inline-form,
+.leg-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.inline-form input {
+  flex: 1 1 200px;
+  width: auto;
+}
+
+.leg-form select,
+.leg-form input {
+  width: auto;
+}
+
+button.danger {
+  color: var(--error-text);
+}
+
+button.link {
+  border: none;
+  background: none;
+  padding: 0 4px;
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+button.link.danger {
+  color: var(--error-text);
+}

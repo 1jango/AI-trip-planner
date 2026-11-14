@@ -5,7 +5,8 @@ Funkcje zwracają None, gdy rekordu nie ma — to router decyduje, że oznacza t
 
 from sqlmodel import Session, col, select
 
-from app.models import Leg, LegUpdate, Trip, TripCreate, TripUpdate
+from app.models import Leg, LegSource, LegUpdate, Trip, TripCreate, TripUpdate
+from app.services.emissions import estimate_co2_kg
 
 
 class InvalidLegTimesError(ValueError):
@@ -66,6 +67,18 @@ def update_leg(session: Session, leg: Leg, changes: LegUpdate) -> Leg:
     arrival = new_values.get("arrival", leg.arrival)
     if arrival < departure:
         raise InvalidLegTimesError("Przyjazd nie może być wcześniejszy niż odjazd")
+
+    # Zmiana trybu lub dystansu bez podania CO₂ → przeliczamy emisję, żeby suma planu
+    # nie pokazywała emisji starego środka transportu. Jawnie podane co2_kg wygrywa.
+    if ("mode" in new_values or "distance_km" in new_values) and "co2_kg" not in new_values:
+        mode = new_values.get("mode", leg.mode)
+        distance_km = new_values.get("distance_km", leg.distance_km)
+        new_values["co2_kg"] = round(estimate_co2_kg(mode, distance_km), 3)
+
+    # Etap ze zmienionym trybem nie pochodzi już z rozkładu jazdy — to dane użytkownika,
+    # więc oznaczamy go jako szacunek (chyba że klient jawnie podał source).
+    if "mode" in new_values and new_values["mode"] != leg.mode and "source" not in new_values:
+        new_values["source"] = LegSource.ESTIMATE
 
     for field_name, new_value in new_values.items():
         setattr(leg, field_name, new_value)
