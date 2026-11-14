@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api, ApiError } from './api/client'
 import type { HealthResponse, PlanRequest, PlanResponse } from './api/types'
 import { PlanResults } from './components/PlanResults'
+import { SavedTrips } from './components/SavedTrips'
 import { SearchForm } from './components/SearchForm'
 
 // Unia stanów zamiast trzech osobnych useState (loading, error, data): nie da się
@@ -24,6 +25,7 @@ function App() {
   const [planState, setPlanState] = useState<PlanState>({ kind: 'idle' })
   const [forceForm, setForceForm] = useState(false)
   const [searchCount, setSearchCount] = useState(0)
+  const [tripsRefreshKey, setTripsRefreshKey] = useState(0)
 
   useEffect(() => {
     // AbortController anuluje żądanie, gdy komponent zniknie (w trybie dev StrictMode
@@ -82,8 +84,14 @@ function App() {
         </p>
       )}
       {planState.kind === 'success' && (
-        <PlanResults key={planState.searchId} plan={planState.plan} />
+        <PlanResults
+          key={planState.searchId}
+          plan={planState.plan}
+          onSaved={() => setTripsRefreshKey((key) => key + 1)}
+        />
       )}
+
+      <SavedTrips refreshKey={tripsRefreshKey} />
     </main>
   )
 }

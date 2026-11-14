@@ -18,9 +18,10 @@ type SaveState =
 
 interface PlanResultsProps {
   plan: PlanResponse
+  onSaved: () => void
 }
 
-export function PlanResults({ plan }: PlanResultsProps) {
+export function PlanResults({ plan, onSaved }: PlanResultsProps) {
   const [saveState, setSaveState] = useState<SaveState>({ kind: 'idle' })
 
   async function saveOption(option: PlanOption, index: number) {
@@ -36,6 +37,7 @@ export function PlanResults({ plan }: PlanResultsProps) {
         legs: option.legs,
       })
       setSaveState({ kind: 'saved', index })
+      onSaved()
     } catch (error) {
       const message = error instanceof ApiError ? error.message : 'Nie udało się zapisać.'
       setSaveState({ kind: 'error', index, message })
