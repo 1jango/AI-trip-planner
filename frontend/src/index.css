@@ -218,10 +218,17 @@ button.primary {
 .stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 16px;
+  gap: 4px 10px;
   list-style: none;
   padding: 0;
   margin: 12px 0;
+}
+
+/* Kropka między statystykami zamiast ikon — pozycje dalej czytają się osobno. */
+.stats li + li::before {
+  content: '·';
+  margin-right: 10px;
+  color: var(--muted);
 }
 
 .legs {

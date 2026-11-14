@@ -17,7 +17,7 @@ type PlanState =
   | { kind: 'idle' }
   | { kind: 'loading' }
   // searchId rośnie przy każdym wyniku — używamy go jako `key`, żeby React zresetował
-  // stan kart (np. „Zapisano ✓”) po nowym wyszukiwaniu.
+  // stan kart (np. „Zapisano”) po nowym wyszukiwaniu.
   | { kind: 'success'; plan: PlanResponse; searchId: number }
   | { kind: 'error'; message: string }
 

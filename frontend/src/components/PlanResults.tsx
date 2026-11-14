@@ -92,7 +92,7 @@ function isSaved(state: SaveState, index: number): boolean {
 
 function saveLabel(state: SaveState, index: number): string {
   if (state.kind === 'saving' && state.index === index) return 'Zapisywanie…'
-  if (isSaved(state, index)) return 'Zapisano ✓'
+  if (isSaved(state, index)) return 'Zapisano'
   return 'Zapisz plan'
 }
 
@@ -121,11 +121,11 @@ function OptionCard({ option, saveLabel, saveDisabled, saveError, onSave }: Opti
       </header>
 
       <ul className="stats">
-        <li>⏱ {formatDuration(option.duration_minutes)}</li>
-        <li>🔁 {formatTransfers(option.transfers)}</li>
-        <li>📏 {option.total_distance_km.toFixed(0)} km</li>
-        <li>🌱 {option.total_co2_kg.toFixed(1)} kg CO₂e</li>
-        <li>💶 ok. {option.estimated_cost_eur.toFixed(0)} €</li>
+        <li>{formatDuration(option.duration_minutes)}</li>
+        <li>{formatTransfers(option.transfers)}</li>
+        <li>{option.total_distance_km.toFixed(0)} km</li>
+        <li>{option.total_co2_kg.toFixed(1)} kg CO₂e</li>
+        <li>ok. {option.estimated_cost_eur.toFixed(0)} €</li>
       </ul>
 
       <ol className="legs">
